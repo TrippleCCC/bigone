@@ -29,8 +29,8 @@ class NewsSearchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     return FutureBuilder(
-      builder: (context, AsyncSnapshot<NewsPost> snapshot) {
-        switch(snapshot.connectionState) {
+      builder: (context, snapshot) {
+        switch (snapshot.connectionState) {
           case ConnectionState.none:
             return null;
           case ConnectionState.active:
@@ -39,13 +39,14 @@ class NewsSearchDelegate extends SearchDelegate {
           case ConnectionState.done:
             return ListView(
                 padding: EdgeInsets.all(2),
-                children:
-                  snapshot.data.articles.map(
-                          (article) => article.toListTile()).toList());
+                children: snapshot.data.articles
+                    .map((article) => article.toListTile(context))
+                    .toList());
         }
         return null;
       },
-      future: _newsFetcher.getNewsPost(query),);
+      future: _newsFetcher.getNewsPost(query),
+    );
   }
 
   @override

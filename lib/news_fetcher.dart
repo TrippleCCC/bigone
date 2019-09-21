@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
-import 'dart:io';
 import 'package:flutter/material.dart';
+import 'article_page.dart';
 
 import 'dart:convert';
 
@@ -33,12 +33,15 @@ class NewsPost {
 
   factory NewsPost.fromJson(Map<String, dynamic> json) {
     return NewsPost(
-        totalResults: json['totalResults'], 
-        articles: _getArticleData(json['articles']),);
+      totalResults: json['totalResults'],
+      articles: _getArticleData(json['articles']),
+    );
   }
 
   static List<NewsArticleData> _getArticleData(List<dynamic> articleJsons) {
-    return articleJsons.map((articleJson) => NewsArticleData.fromJson(articleJson)).toList();
+    return articleJsons
+        .map((articleJson) => NewsArticleData.fromJson(articleJson))
+        .toList();
   }
 }
 
@@ -51,22 +54,33 @@ class NewsArticleData {
   String url;
   String urlToImage;
 
-  NewsArticleData({this.source, this.author, this.title, this.description, this.url, this.urlToImage});
+  NewsArticleData(
+      {this.source,
+      this.author,
+      this.title,
+      this.description,
+      this.url,
+      this.urlToImage});
 
   factory NewsArticleData.fromJson(Map<String, dynamic> articleJson) {
     return NewsArticleData(
-      source: articleJson['source']['name'] ?? "",
-      author: articleJson['author'] ?? "",
-      title: articleJson['title'] ?? "",
-      description: articleJson['description'] ?? "",
-      url: articleJson['url'] ?? "",
-      urlToImage: articleJson['urlToImage']) ?? "";
+            source: articleJson['source']['name'] ?? "",
+            author: articleJson['author'] ?? "",
+            title: articleJson['title'] ?? "",
+            description: articleJson['description'] ?? "",
+            url: articleJson['url'] ?? "",
+            urlToImage: articleJson['urlToImage']) ??
+        "";
   }
 
-  ListTile toListTile() {
+  ListTile toListTile(BuildContext context) {
     return ListTile(
       title: Text(title.toUpperCase()),
       subtitle: Text("By $author - $source"),
-      onTap: () {},);
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => ArticlePage(this)));
+      },
+    );
   }
 }
