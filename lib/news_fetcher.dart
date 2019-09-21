@@ -1,4 +1,6 @@
 import 'package:http/http.dart' as http;
+import 'dart:io';
+import 'package:flutter/material.dart';
 
 import 'dart:convert';
 
@@ -32,11 +34,11 @@ class NewsPost {
   factory NewsPost.fromJson(Map<String, dynamic> json) {
     return NewsPost(
         totalResults: json['totalResults'], 
-        articles: _getArticleData(json['articles']));
+        articles: _getArticleData(json['articles']),);
   }
 
-  static List<NewsArticleData> _getArticleData(List<String> articleJsons) {
-    return articleJsons.map((articleJson) => NewsArticleData.fromJson(json.decode(articleJson))).toList();
+  static List<NewsArticleData> _getArticleData(List<dynamic> articleJsons) {
+    return articleJsons.map((articleJson) => NewsArticleData.fromJson(articleJson)).toList();
   }
 }
 
@@ -53,11 +55,18 @@ class NewsArticleData {
 
   factory NewsArticleData.fromJson(Map<String, dynamic> articleJson) {
     return NewsArticleData(
-      source: json.decode(articleJson['source'])['name'],
-      author: articleJson['author'],
-      title: articleJson['title'],
-      description: articleJson['description'],
-      url: articleJson['url'],
-      urlToImage: articleJson['urlToImage']);
+      source: articleJson['source']['name'] ?? "",
+      author: articleJson['author'] ?? "",
+      title: articleJson['title'] ?? "",
+      description: articleJson['description'] ?? "",
+      url: articleJson['url'] ?? "",
+      urlToImage: articleJson['urlToImage']) ?? "";
+  }
+
+  ListTile toListTile() {
+    return ListTile(
+      title: Text(title.toUpperCase()),
+      subtitle: Text("By $author - $source"),
+      onTap: () {},);
   }
 }
