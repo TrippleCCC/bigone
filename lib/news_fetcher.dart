@@ -64,13 +64,12 @@ class NewsArticleData {
 
   factory NewsArticleData.fromJson(Map<String, dynamic> articleJson) {
     return NewsArticleData(
-            source: articleJson['source']['name'] ?? "",
-            author: articleJson['author'] ?? "",
-            title: articleJson['title'] ?? "",
-            description: articleJson['description'] ?? "",
-            url: articleJson['url'] ?? "",
-            urlToImage: articleJson['urlToImage']) ??
-        "";
+        source: articleJson['source']['name'] ?? "",
+        author: articleJson['author'] ?? "",
+        title: articleJson['title'] ?? "",
+        description: articleJson['description'] ?? "",
+        url: articleJson['url'] ?? "",
+        urlToImage: articleJson['urlToImage'] ?? "");
   }
 
   ListTile toListTile(BuildContext context) {

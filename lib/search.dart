@@ -29,7 +29,7 @@ class NewsSearchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     return FutureBuilder(
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot<NewsPost> snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
             return null;
@@ -43,7 +43,7 @@ class NewsSearchDelegate extends SearchDelegate {
                     .map((article) => article.toListTile(context))
                     .toList());
         }
-        return null;
+        return Container();
       },
       future: _newsFetcher.getNewsPost(query),
     );
